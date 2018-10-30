@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render
 from .models import *
 from django.http import HttpResponse
@@ -9,5 +10,11 @@ def insert(request):
     return HttpResponse('insert 100')
 
 def board_list(request):
-
-    return render(request, '', {})
+    now_page  = request.GET['page']
+    board_list = Board.objects.order_by('-id')
+    paginator = Paginator(board_list, 10)
+    page_info = paginator.page(now_page)
+    return render(request, 'pagination/list.html',
+                  {
+                      'page_info': page_info
+                   })
