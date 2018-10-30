@@ -14,7 +14,13 @@ def board_list(request):
     board_list = Board.objects.order_by('-id')
     paginator = Paginator(board_list, 10)
     page_info = paginator.page(now_page)
+
+
+    start_page = (int(now_page) -1)//10*10+1
+    end_page = start_page +10
+    page_range = range(start_page,end_page)
     return render(request, 'pagination/list.html',
                   {
-                      'page_info': page_info
+                      'page_info': page_info,
+                      'page_range':page_range
                    })
